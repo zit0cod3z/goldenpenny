@@ -1,0 +1,4 @@
+goldenpenny_venv/
+goldenpenny/__pycache__/
+qr_app/__pycache__/
+qr_app/migrations/__pycache__
