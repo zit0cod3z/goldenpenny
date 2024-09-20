@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import User
-from .serializers import UserSerializer
+# from .serializers import UserSerializer
 from django.db.models import Q
 
 # View to render the HTML template
