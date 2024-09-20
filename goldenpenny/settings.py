@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'qr_app.apps.QrAppConfig',
-    'rest_framework',
     'crispy_forms',
     'crispy_bootstrap4',
     'django_filters',
