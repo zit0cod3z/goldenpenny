@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onsite Soup Fest Registration</title>
+ <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .popup {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #28a745; /* Green background */
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensure it appears above other content */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        a {
+            text-decoration: underline;
+            color: #007BFF; /* Bootstrap primary color */
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #0056b3; /* Darker shade on hover */
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .checkmark-container {
+            margin-bottom: 15px;
+        }
+
+        .checkmark {
+            width: 50px; /* Medium size */
+            height: 50px;
+        }
+
+        .checkmark-circle {
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .checkmark-check {
+            stroke: white;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            animation: checkmark 0.4s ease-in-out forwards;
+        }
+
+        @keyframes checkmark {
+        0% {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+        }
+        100% {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 0;
+        }
+        }
+
+        #closePopup {
+            margin-top: 10px;
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .spinner {
+            display: none; /* Hidden by default */
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 0.6s linear infinite;
+            margin-top: 10px; /* Spacing above spinner */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .popup.show {
+            display: block; /* Show popup when it has the 'show' class */
+        }
+
+        @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            animation: fadeIn 0.5s;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            background-color: #fafafa;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        select:focus {
+            border-color: #28a745;
+            outline: none;
+            background-color: #fff;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .additional-options {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            select,
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Onsite Registration</h1>
+
+        {% if error_message %}
+            <div class="error">{{ error_message }}</div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'register_page' %}" id="registerForm">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Full Name" required />
+            <input type="email" name="email" placeholder="Valid Email address" required />
+            <input type="text" name="phone_number" placeholder="Valid Phone Number" required />
+            <input type="text" name="instagram_handle" placeholder="Instagram Handle" required />
+            
+            <label for="ticket_type">Ticket Type:</label>
+            <select id="ticket_type" name="ticket_type" required>
+                <option value="Individual">Individual</option>
+                <option value="Family">Family</option>
+            </select>
+            <!-- <div class="additional-options" id="additionalOptions">
+                <input type="text" name="additional_info" placeholder="Additional Info for Ticket Type" />
+            </div> -->
+            <div class="children-inputs" id="childrenInputs" style="display: none;">
+                <label for="number_of_children">How many children?</label>
+                <select id="number_of_children" name="number_of_children">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <div id="childrenNames"></div> <!-- Container for child name inputs -->
+            </div>
+            <div style="margin-top: 20px;">
+                <label>
+                    <input type="checkbox" name="agree_to_terms" required>
+                    I agree to the <a href="https://gpsoupfestival.com/guidelines" target="_blank" style="text-decoration: underline; color: #007BFF;">event's rules and guidelines</a>.
+                </label>
+            </div>
+            <button type="submit">Register for Soup Fest</button>
+        </form>
+    </div>
+
+
+    {% if registration_success %}
+    <div class="popup" id="successPopup">
+        <div class="popup-content">
+            <div class="checkmark-container">
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
+                    <path class="checkmark-check" fill="none" d="M14 26l7 7 15-15" />
+                </svg>
+            </div>
+            <strong>Registration Successful!</strong>
+            <p>You have registered successfully.</p>
+            <button id="closePopup">Close</button>
+            <div class="spinner" id="loadingSpinner"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script>
+        // Show additional options based on ticket type selection
+        const ticketTypeSelect = document.getElementById('ticket_type');
+        const additionalOptions = document.getElementById('additionalOptions');
+        const childrenInputs = document.getElementById('childrenInputs');
+        const numberOfChildrenSelect = document.getElementById('number_of_children');
+        const childrenNamesContainer = document.getElementById('childrenNames');
+
+        ticketTypeSelect.addEventListener('change', function() {
+            if (this.value === 'Individual' || this.value === 'Family') {
+                ticketTypeSelect.style.display = 'block';
+            } else {
+                ticketTypeSelect.style.display = 'none';
+            }
+            // Show children inputs only if Family is selected
+            if (this.value === 'Family') {
+                childrenInputs.style.display = 'block';
+            } else {
+                childrenInputs.style.display = 'none';
+                childrenNamesContainer.innerHTML = ''; // Clear previous inputs
+                numberOfChildrenSelect.selectedIndex = 0; // Reset to 0
+            }
+        });
+
+            numberOfChildrenSelect.addEventListener('change', function() {
+            const numChildren = parseInt(this.value);
+            childrenNamesContainer.innerHTML = ''; // Clear previous inputs
+
+            for (let i = 0; i < numChildren; i++) {
+                const childInput = document.createElement('input');
+                childInput.type = 'text';
+                childInput.name = `child_name_${i + 1}`; // Unique names for each child
+                childInput.placeholder = `Child ${i + 1} Name`;
+                childInput.classList.add('child-input');
+                childrenNamesContainer.appendChild(childInput);
+            }
+        });
+
+        // const form = document.getElementById('registerForm');
+        // const popup = document.getElementById('successPopup');
+
+        // // Show popup if registration is successful
+        {% if user %}
+        //     popup.classList.add('show');
+        //     setTimeout(() => {
+        //         popup.classList.remove('show');
+        //         window.location.href = "{% url 'user_check_page' %}"; // Redirect after 3 seconds
+        //     }, 10000);
+// Show the popup if registration is successful
+        const popup = document.getElementById('successPopup');
+        const closePopupButton = document.getElementById('closePopup');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        if (popup) {
+            popup.classList.add('show'); // Add 'show' class to display it
+
+            closePopupButton.addEventListener('click', function() {
+                loadingSpinner.style.display = 'block'; // Show the spinner
+                setTimeout(() => {
+                    popup.classList.remove('show'); // Hide the popup
+                    setTimeout(() => {
+                        window.location.href = "{% url 'user_check_page' %}"; // Redirect to user check page
+                    }, 1000); // Delay for fade-out effect
+                }, 300); // Delay to show spinner before hiding the popup
+            });
+        }
+        {% endif %}
+    </script>
+</body>
+</html>

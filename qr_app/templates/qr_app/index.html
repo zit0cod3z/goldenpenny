@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Check</title>
+    <title>Golden Penny Registration Validation</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -42,6 +42,13 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            border-color: #28a745;
+            outline: none;
         }
 
         button {
@@ -57,6 +64,21 @@
 
         button:hover {
             background-color: #218838;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .register-link a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .register-link a:hover {
+            color: #0056b3;
         }
 
         .result {
@@ -90,26 +112,39 @@
 </head>
 <body>
     <div class="container">
-        <h1>Verify User Details</h1>
+        <h1>Check User Details</h1>
         <form method="POST" action="{% url 'user_check_page' %}">
             {% csrf_token %}
-            <input type="text" name="name" placeholder="Name" />
-            <input type="email" name="email" placeholder="Email" />
-            <input type="text" name="phone_number" placeholder="Phone Number" />
+            <input type="text" name="name" placeholder="Full Name Or" />
+            <input type="email" name="email" placeholder="Valid Email address Or" />
+            <input type="text" name="phone_number" placeholder="Valid Phone Number" />
             <button type="submit">Verify</button>
         </form>
 
-        {% if result %}
-            <div class="result {{ result_class }}">
-                <strong>{{ result }}</strong>
-                {% if user %}
-                    <p><strong>User Details:</strong></p>
-                    <p>Name: {{ user.name }}</p>
-                    <p>Email: {{ user.email }}</p>
-                    <p>Phone Number: {{ user.phone_number }}</p>
-                {% endif %}
-            </div>
+        <div class="register-link">
+            <p>Not verified? means not registered.. <a href="{% url 'register_page' %}">Register here</a></p>
+        </div>
+
+{% if result %}
+    <h1>{{ result }}</h1>
+    <div class="{{ result_class }}">
+        <h2>User Details:</h2>
+        <p>Name: {{ attendee.name }}</p>
+        <p>Email: {{ attendee.email }}</p>
+        <p>Phone Number: {{ attendee.phone_number }}</p>
+        <p>Ticket Type: {{ attendee.ticket_type }}</p>
+
+        {% if attendee.children.exists %}
+            <h2>Children:</h2>
+            <ul>
+                {% for child in attendee.children.all %}
+                    <li>{{ child.name }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No children registered.</p>
         {% endif %}
-    </div>
+{% endif %}
+</div>
 </body>
 </html>
