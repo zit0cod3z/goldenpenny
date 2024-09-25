@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Onsite Soup Fest Registration</title>
+    <!-- <title>Onsite Soup Fest Registration</title> -->
+    <title>Onsite Registration</title>
  <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -211,20 +212,20 @@
 
         <form method="POST" action="{% url 'register_page' %}" id="registerForm">
             {% csrf_token %}
-            <input type="text" name="name" placeholder="Full Name" required />
+            <input type="text" name="name" placeholder="Full Name and Organization" required />
             <input type="email" name="email" placeholder="Valid Email address" required />
             <input type="text" name="phone_number" placeholder="Valid Phone Number" required />
-            <input type="text" name="instagram_handle" placeholder="Instagram Handle" required />
+            <!-- <input type="text" name="instagram_handle" placeholder="Instagram Handle" required /> -->
             
-            <label for="ticket_type">Ticket Type:</label>
+            <!-- <label for="ticket_type">Ticket Type:</label>
             <select id="ticket_type" name="ticket_type" required>
                 <option value="Individual">Individual</option>
                 <option value="Family">Family</option>
-            </select>
+            </select> -->
             <!-- <div class="additional-options" id="additionalOptions">
                 <input type="text" name="additional_info" placeholder="Additional Info for Ticket Type" />
             </div> -->
-            <div class="children-inputs" id="childrenInputs" style="display: none;">
+<!--             <div class="children-inputs" id="childrenInputs" style="display: none;">
                 <label for="number_of_children">How many children?</label>
                 <select id="number_of_children" name="number_of_children">
                     <option value="0">0</option>
@@ -233,15 +234,15 @@
                     <option value="3">3</option>
                     <option value="4">4</option>
                 </select>
-                <div id="childrenNames"></div> <!-- Container for child name inputs -->
-            </div>
-            <div style="margin-top: 20px;">
+                <div id="childrenNames"></div> Container for child name inputs -->
+            <!-- </div> -->
+            <!-- <div style="margin-top: 20px;">
                 <label>
                     <input type="checkbox" name="agree_to_terms" required>
                     I agree to the <a href="https://gpsoupfestival.com/guidelines" target="_blank" style="text-decoration: underline; color: #007BFF;">event's rules and guidelines</a>.
                 </label>
-            </div>
-            <button type="submit">Register for Soup Fest</button>
+            </div> -->
+            <button type="submit">Register for Women in Mining</button>
         </form>
     </div>
 
