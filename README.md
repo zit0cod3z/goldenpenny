@@ -1,2 +1,2 @@
-# goldenpenny
+# Goldenpenny attendee verification webapp 
  
